@@ -1,142 +1,886 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "This fork's notes in every language.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Заметки этого форка на всех языках."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les notes de ce fork dans toutes les langues."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このフォークのお知らせをすべての言語で。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As notas deste fork em todos os idiomas."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此派生版本的说明现已支持所有语言。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此派生版本的說明現已支援所有語言。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Hinweise dieses Forks in jeder Sprache."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нотатки цього форку всіма мовами."
+          }
+        }
+      }
+    },
+    "Every language": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Все языки"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toutes les langues"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべての言語"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todos os idiomas"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所有语言"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所有語言"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jede Sprache"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Усі мови"
+          }
+        }
+      }
+    },
+    "The What's New notes of this fork now read in all of Codenotch's languages, and English stays the default for everyone else.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Заметки о новинках этого форка теперь доступны на всех языках Codenotch, а для всех остальных по умолчанию остаётся английский."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les nouveautés de ce fork se lisent désormais dans toutes les langues de Codenotch, et l'anglais reste la langue par défaut pour tous les autres."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このフォークの新機能のお知らせは Codenotch のすべての言語で読めるようになりました。それ以外の方には引き続き英語が既定の言語です。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "As novidades deste fork agora aparecem em todos os idiomas do Codenotch, e o inglês continua sendo o padrão para todos os demais."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此派生版本的新功能说明现在可以用 Codenotch 的所有语言阅读，其他所有人仍默认使用英语。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此派生版本的新功能說明現在可以用 Codenotch 的所有語言閱讀，其他所有人仍預設使用英文。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Neuigkeiten dieses Forks gibt es jetzt in allen Sprachen von Codenotch, und für alle anderen bleibt Englisch die Standardsprache."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нотатки про новинки цього форку тепер доступні всіма мовами Codenotch, а для всіх інших типовою лишається англійська."
+          }
+        }
+      }
+    },
     "Grok shows as working when scripts and agents run it.": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grok показывается как работающий, когда его запускают скрипты и агенты."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grok apparaît comme actif quand des scripts et des agents l'exécutent."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スクリプトやエージェントが Grok を実行しているとき、作業中として表示されます。"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "O Grok aparece trabalhando quando scripts e agentes o usam."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "脚本和智能体运行 Grok 时，它会显示为工作中。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "腳本和代理程式執行 Grok 時，它會顯示為工作中。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grok wird als aktiv angezeigt, wenn Skripte und Agenten ihn ausführen."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grok показується як активний, коли його запускають скрипти та агенти."
           }
         }
       }
     },
     "Headless Grok runs": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запуски Grok в headless-режиме"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exécutions headless de Grok"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ヘッドレスでの Grok 実行"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "Execuções headless do Grok"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grok 的无界面运行"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grok 的無介面執行"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Headless-Läufe von Grok"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запуски Grok у headless-режимі"
           }
         }
       }
     },
     "A grok -p run, the way scripts and other agents use Grok, now shows as working on the notch, as its terminal app always did.": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запуск grok -p (так скрипты и другие агенты используют Grok) теперь показывается на выемке как работающий, как всегда это делало его терминальное приложение."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une exécution grok -p, la façon dont les scripts et les autres agents utilisent Grok, apparaît désormais comme active dans l'encoche, comme son application de terminal l'a toujours fait."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スクリプトやほかのエージェントが Grok を使うときの grok -p 実行も、ターミナルアプリと同じように、ノッチに作業中として表示されるようになりました。"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "Uma execução grok -p, o jeito como scripts e outros agentes usam o Grok, agora aparece trabalhando no notch, como o app de terminal dele sempre apareceu."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "grok -p 运行（也就是脚本和其他智能体使用 Grok 的方式）现在会像它的终端应用一样，在刘海上显示为工作中。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "grok -p 執行（也就是腳本和其他代理程式使用 Grok 的方式）現在會像它的終端機應用程式一樣，在瀏海上顯示為工作中。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Lauf von grok -p, so wie Skripte und andere Agenten Grok nutzen, wird jetzt in der Notch als aktiv angezeigt, so wie es seine Terminal-App schon immer getan hat."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запуск grok -p (так скрипти й інші агенти використовують Grok) тепер показується на вирізі як активний, як завжди це робив його термінальний застосунок."
           }
         }
       }
     },
     "Fixes on top of 1.14.0-gabriel.1.": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Исправления поверх 1.14.0-gabriel.1."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corrections apportées à 1.14.0-gabriel.1."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1.14.0-gabriel.1 からの修正。"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Correções sobre a 1.14.0-gabriel.1."
+            "value": "Correções adicionais à 1.14.0-gabriel.1."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "基于 1.14.0-gabriel.1 的修正。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "基於 1.14.0-gabriel.1 的修正。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Korrekturen zusätzlich zu 1.14.0-gabriel.1."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Виправлення поверх 1.14.0-gabriel.1."
           }
         }
       }
     },
     "A steadier move handle": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Более устойчивый маркер перемещения"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une poignée de déplacement plus stable"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "より安定した移動ハンドル"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "Uma alça de mover mais firme"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更稳的移动手柄"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更穩的移動握把"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein ruhigerer Verschiebe-Griff"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Стабільніший маркер переміщення"
           }
         }
       }
     },
     "A click on the move handle no longer nudges the notch. It moves once you really drag it.": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Щелчок по маркеру перемещения больше не сдвигает выемку. Она двигается, только когда вы действительно её перетаскиваете."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un clic sur la poignée de déplacement ne décale plus l'encoche. Elle ne bouge que lorsque vous la faites vraiment glisser."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移動ハンドルをクリックしてもノッチがずれなくなりました。実際にドラッグしたときだけ動きます。"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "Um clique na alça de mover não desloca mais o notch. Ele só se move quando você arrasta de verdade."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点击移动手柄不再会挪动刘海。只有真正拖动时它才会移动。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "點按移動握把不再會挪動瀏海。只有真正拖動時它才會移動。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein Klick auf den Verschiebe-Griff verschiebt die Notch nicht mehr. Sie bewegt sich erst, wenn du wirklich ziehst."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Клацання на маркері переміщення більше не зсуває виріз. Він рухається, лише коли ви справді його перетягуєте."
           }
         }
       }
     },
     "The picker in the Displays block is now called Show on, so it no longer repeats the block's title.": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выбор в блоке «Дисплеи» теперь называется «Показывать на» и больше не повторяет заголовок блока."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le sélecteur du bloc Écrans s'appelle désormais Afficher sur et ne répète plus le titre du bloc."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ディスプレイのブロックにある選択項目は「表示先」という名前になり、ブロックの見出しと重複しなくなりました。"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "O seletor do bloco Telas agora se chama Exibir em e não repete mais o título do bloco."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“显示器”区块中的选择项现在叫“显示于”，不再与区块标题重复。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "「顯示器」區塊中的選擇項目現在叫「顯示於」，不再與區塊標題重複。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Auswahl im Block Bildschirme heißt jetzt Anzeigen auf und wiederholt nicht mehr den Titel des Blocks."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибір у блоці «Дисплеї» тепер називається «Показувати на» і більше не повторює заголовок блоку."
           }
         }
       }
     },
     "Gabriel Alonso's adaptation of Codenotch 1.14.0: Claude's weekly ring, a notch you can place anywhere, and a clearer Appearance.": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Адаптация Codenotch 1.14.0 от Gabriel Alonso: недельное кольцо Claude, выемка, которую можно разместить где угодно, и более понятный внешний вид."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'adaptation de Codenotch 1.14.0 par Gabriel Alonso : l'anneau hebdomadaire de Claude, une encoche que vous placez où vous voulez et une Apparence plus claire."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gabriel Alonso による Codenotch 1.14.0 の改変版：Claude の週間リング、好きな場所に置けるノッチ、そしてわかりやすくなった外観。"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "A adaptação de Gabriel Alonso do Codenotch 1.14.0: o anel semanal do Claude, um notch que você coloca onde quiser e uma Aparência mais clara."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gabriel Alonso 改编的 Codenotch 1.14.0：Claude 每周圆环、可放在任意位置的刘海，以及更清晰的外观。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gabriel Alonso 改編的 Codenotch 1.14.0：Claude 每週圓環、可放在任意位置的瀏海，以及更清楚的外觀。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gabriel Alonsos Anpassung von Codenotch 1.14.0: Claudes Wochenring, eine Notch, die du überall platzieren kannst, und ein übersichtlicheres Erscheinungsbild."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Адаптація Codenotch 1.14.0 від Gabriel Alonso: тижневе кільце Claude, виріз, який можна розмістити будь-де, і зрозуміліший зовнішній вигляд."
           }
         }
       }
     },
     "Claude's weekly ring": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Недельное кольцо Claude"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'anneau hebdomadaire de Claude"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude の週間リング"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "O anel semanal do Claude"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude 每周圆环"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude 每週圓環"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claudes Wochenring"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Тижневе кільце Claude"
           }
         }
       }
     },
     "Claude ring, in Appearance, picks what Claude's big ring reads: the session, the weekly limit or the daily pace.": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«Кольцо Claude» во «Внешнем виде» выбирает, что показывает большое кольцо Claude: сессию, недельный лимит или дневной темп."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'Anneau Claude, dans Apparence, choisit ce qu'affiche le grand anneau de Claude : la session, la limite hebdomadaire ou le rythme quotidien."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外観の Claude リングで、Claude の大きなリングに表示する内容を選べます：セッション、週間の上限、または日次ペース。"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "Anel do Claude, em Aparência, escolhe o que o anel grande do Claude mostra: a sessão, o limite semanal ou o ritmo diário."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外观中的“Claude 圆环”决定 Claude 大圆环显示的内容：会话、每周限额或每日节奏。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外觀中的「Claude 圓環」決定 Claude 大圓環顯示的內容：會話、每週限額或每日節奏。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude-Ring im Erscheinungsbild legt fest, was Claudes großer Ring zeigt: die Sitzung, das Wochenlimit oder das Tagestempo."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«Кільце Claude» у «Зовнішньому вигляді» визначає, що показує велике кільце Claude: сесію, тижневий ліміт або денний темп."
           }
         }
       }
     },
     "Place the notch anywhere": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выемка где угодно"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Placez l'encoche où vous voulez"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ノッチを好きな場所に"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "Coloque o notch onde quiser"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刘海随处可放"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "瀏海隨處可放"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Notch überall platzieren"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Виріз будь-де"
           }
         }
       }
     },
     "Let go of the move handle anywhere along any edge and the notch lands there, or set it with the new Position slider.": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отпустите маркер перемещения в любом месте любого края, и выемка окажется там, или задайте её положение новым ползунком «Положение»."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relâchez la poignée de déplacement n'importe où le long de n'importe quel bord et l'encoche s'y pose, ou réglez-la avec le nouveau curseur Position."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移動ハンドルをどの辺のどこで離しても、ノッチはその位置に置かれます。新しい位置スライダーでも調整できます。"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "Solte a alça de mover em qualquer ponto de qualquer borda e o notch fica ali, ou ajuste pelo novo controle Posição."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在任意一条边的任意位置松开移动手柄，刘海就会停在那里；也可以用新的“位置”滑块来调整。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在任一邊的任意位置放開移動握把，瀏海就會停在那裡；也可以用新的「位置」滑桿來調整。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lass den Verschiebe-Griff an einer beliebigen Stelle eines beliebigen Rands los, und die Notch landet dort, oder stelle sie mit dem neuen Regler Position ein."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Відпустіть маркер переміщення в будь-якому місці будь-якого краю, і виріз опиниться там, або задайте його положення новим повзунком «Положення»."
           }
         }
       }
     },
     "A clearer Appearance": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Более понятный внешний вид"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une Apparence plus claire"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "わかりやすくなった外観"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "Uma Aparência mais clara"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更清晰的外观"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更清楚的外觀"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein übersichtlicheres Erscheinungsbild"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Зрозуміліший зовнішній вигляд"
           }
         }
       }
     },
     "Appearance is split into Readings, Visibility, Style, Placement and Displays.": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«Внешний вид» теперь разделён на «Данные», «Видимость», «Стиль», «Расположение» и «Дисплеи»."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le volet Apparence est désormais divisé en Relevés, Visibilité, Style, Emplacement et Écrans."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外観は、読み取り、表示方法、スタイル、配置、ディスプレイに分かれました。"
+          }
+        },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
             "value": "Aparência agora é dividida em Leituras, Visibilidade, Estilo, Posicionamento e Telas."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外观现在分为读数、显示方式、样式、摆放位置和显示器。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外觀現在分為讀數、顯示方式、樣式、擺放位置和顯示器。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erscheinungsbild ist jetzt in Messwerte, Sichtbarkeit, Stil, Platzierung und Bildschirme gegliedert."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "«Зовнішній вигляд» тепер поділено на «Показники», «Видимість», «Стиль», «Розташування» і «Дисплеї»."
           }
         }
       }

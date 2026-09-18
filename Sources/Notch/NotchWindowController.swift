@@ -959,10 +959,12 @@ final class NotchWindowController {
         let range = alongOffsetRange(on: model.edge)
         let current = range.map { min(max(model.alongOffset, $0.lowerBound), $0.upperBound) }
             ?? model.alongOffset
+        var hasMoved = false
         func landing(on target: NotchEdge) -> CGFloat {
             let offset = NotchGeometry.carriedOffset(
                 from: model.edge, at: current, pressedAt: press,
-                to: target, releasedAt: NSEvent.mouseLocation, in: screen
+                to: target, releasedAt: NSEvent.mouseLocation,
+                hasMoved: hasMoved, in: screen
             )
             // Only this edge's range is known here; another edge's pill has a
             // different length, and `panelFrame` clamps it there on arrival.
@@ -981,7 +983,6 @@ final class NotchWindowController {
             dropZones = nil
         }
 
-        var hasMoved = false
         while let event = panel.nextEvent(matching: [.leftMouseDragged, .leftMouseUp]) {
             let pointer = NSEvent.mouseLocation
             hasMoved = hasMoved

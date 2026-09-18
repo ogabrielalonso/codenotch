@@ -177,7 +177,10 @@ enum NotchGeometry {
     ///
     /// Back on its own edge it slides by however far the pointer travelled
     /// along it, the way the ⌥-drag does, so a press that never moves leaves
-    /// it where it was instead of jumping to centre on the handle. On another
+    /// it where it was instead of jumping to centre on the handle. Until the
+    /// pointer has really moved (`hasMoved`, the same slop that keeps a click
+    /// from changing edges) it stays put: a hand is never perfectly still on
+    /// a click, and a few points of it are not a choice of place. On another
     /// edge there is no distance to carry over, so it centres where the
     /// pointer let go.
     static func carriedOffset(
@@ -186,10 +189,12 @@ enum NotchGeometry {
         pressedAt press: CGPoint,
         to target: NotchEdge,
         releasedAt release: CGPoint,
+        hasMoved: Bool,
         in screen: ScreenDescribing
     ) -> CGFloat {
         let landing = alongOffset(centring: release, on: target, in: screen)
         guard target == edge else { return landing }
+        guard hasMoved else { return offset }
         return offset + landing - alongOffset(centring: press, on: edge, in: screen)
     }
 

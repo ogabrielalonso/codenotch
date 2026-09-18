@@ -1,12 +1,52 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Fixes on top of 1.14.0-gabriel.1.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Correções sobre a 1.14.0-gabriel.1."
+          }
+        }
+      }
+    },
+    "A steadier move handle": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma alça de mover mais firme"
+          }
+        }
+      }
+    },
+    "A click on the move handle no longer nudges the notch. It moves once you really drag it.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um clique na alça de mover não desloca mais o notch. Ele só se move quando você arrasta de verdade."
+          }
+        }
+      }
+    },
+    "The picker in the Displays block is now called Show on, so it no longer repeats the block's title.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O seletor do bloco Telas agora se chama Exibir em e não repete mais o título do bloco."
+          }
+        }
+      }
+    },
     "Gabriel Alonso's adaptation of Codenotch 1.14.0: Claude's weekly ring, a notch you can place anywhere, and a clearer Appearance.": {
       "localizations": {
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "A adaptação de Gabriel Alonso do Codenotch 1.14.0: o anel semanal do Claude, um notch que você coloca onde quiser e um Appearance mais claro."
+            "value": "A adaptação de Gabriel Alonso do Codenotch 1.14.0: o anel semanal do Claude, um notch que você coloca onde quiser e uma Aparência mais clara."
           }
         }
       }
@@ -26,7 +66,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Claude ring, em Appearance, escolhe o que o anel grande do Claude mostra: a sessão, o limite semanal ou o ritmo diário."
+            "value": "Anel do Claude, em Aparência, escolhe o que o anel grande do Claude mostra: a sessão, o limite semanal ou o ritmo diário."
           }
         }
       }
@@ -46,7 +86,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Solte a alça de mover em qualquer ponto de qualquer borda e o notch fica ali, ou ajuste pelo novo slider Position."
+            "value": "Solte a alça de mover em qualquer ponto de qualquer borda e o notch fica ali, ou ajuste pelo novo controle Posição."
           }
         }
       }
@@ -56,7 +96,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Um Appearance mais claro"
+            "value": "Uma Aparência mais clara"
           }
         }
       }
@@ -66,7 +106,7 @@
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appearance agora é dividido em Readings, Visibility, Style, Placement e Displays."
+            "value": "Aparência agora é dividida em Leituras, Visibilidade, Estilo, Posicionamento e Telas."
           }
         }
       }

@@ -34,6 +34,20 @@ enum ReleaseNotes {
             // This fork's own builds: Codenotch 1.14.0 plus the changes below,
             // numbered after the release they are based on.
             ReleaseNote(
+                version: "1.14.0-gabriel.2",
+                headline: L10n.t("Fixes on top of 1.14.0-gabriel.1."),
+                changes: [
+                    ReleaseNote.Change(
+                        title: L10n.t("A steadier move handle"),
+                        detail: L10n.t("A click on the move handle no longer nudges the notch. It moves once you really drag it.")
+                    ),
+                    ReleaseNote.Change(
+                        title: L10n.t("Show on"),
+                        detail: L10n.t("The picker in the Displays block is now called Show on, so it no longer repeats the block's title.")
+                    ),
+                ]
+            ),
+            ReleaseNote(
                 version: "1.14.0-gabriel.1",
                 headline: L10n.t("Gabriel Alonso's adaptation of Codenotch 1.14.0: Claude's weekly ring, a notch you can place anywhere, and a clearer Appearance."),
                 changes: [

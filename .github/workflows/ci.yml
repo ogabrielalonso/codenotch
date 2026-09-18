@@ -7,7 +7,9 @@ on:
 
 jobs:
   test:
-    if: github.repository == 'vinzdg/codenotch'
+    # This fork runs its own tests too, so every push to its main is checked
+    # on a clean runner. Packaging stays upstream-only (see package.yml).
+    if: github.repository == 'vinzdg/codenotch' || github.repository == 'ogabrielalonso/codenotch'
     name: Unit tests
     # macOS 26, because that is what the app targets. An older image ships an
     # Xcode that cannot read the project at all — `objectVersion 77` is a

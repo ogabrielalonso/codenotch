@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   pull_request:
+  # This fork can run its tests on demand too, from its Actions tab.
+  workflow_dispatch:
 
 jobs:
   test:

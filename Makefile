@@ -28,6 +28,22 @@ DEST    ?= platform=macOS,arch=$(ARCH)
 # "Signing for Codenotch requires a development team", on every target.
 HAS_DEVELOPER_ID := $(shell security find-identity -v -p codesigning 2>/dev/null | grep "Developer ID Application")
 
+# Where development builds go. Spotlight lists every Codenotch.app it can see
+# as an installed app, and after a `make test` the launcher opened the Debug
+# test host in Xcode's DerivedData instead of the copy in /Applications. The
+# `build/.metadata_never_index` below does not stop it: on macOS 26 that
+# marker only counts at a volume's root, and Spotlight indexed a bundle
+# under build/ anyway. A folder named `.noindex` is skipped (both checked on
+# the same Mac), so the build products live in one.
+#
+# Spotlight is half of it. Xcode also registers every app it builds with
+# Launch Services, and anything that opens Codenotch by its bundle id can pick
+# a registered copy, so each target takes its build back out once it is done
+# with it.
+DEV_DERIVED := build/DerivedData.noindex
+LSREGISTER  := /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
+UNREGISTER   = $(LSREGISTER) -u $(1) 2>/dev/null || true
+
 # A personal "Apple Development" certificate, where there is one, is preferred
 # over ad-hoc for exactly the reason the maintainer's identity is: it is
 # stable, so a keychain "Always Allow" grant survives the next rebuild, and
@@ -63,11 +79,17 @@ gen:
 
 build: gen
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(DEST)' \
-		-configuration Debug $(DEV_SIGN) build
+		-derivedDataPath $(DEV_DERIVED) -configuration Debug $(DEV_SIGN) build
+	$(call UNREGISTER,$(DEV_DERIVED)/Build/Products/Debug/Codenotch.app)
 
+# Running the tests launches the Debug app as their host, so it is taken out
+# of Launch Services afterwards, pass or fail.
 test: gen
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(DEST)' \
-		-configuration Debug $(DEV_SIGN) test
+		-derivedDataPath $(DEV_DERIVED) -configuration Debug $(DEV_SIGN) test; \
+	status=$$?; \
+	$(LSREGISTER) -u $(DEV_DERIVED)/Build/Products/Debug/Codenotch.app 2>/dev/null; \
+	exit $$status
 
 # Continuous integration: no Developer ID identity exists on a CI runner, and
 # unit tests need none — override the manual signing with plain unsigned
@@ -88,7 +110,7 @@ verify-deps:
 
 run: build
 	@APP=$$(xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(DEST)' \
-		-configuration Debug -showBuildSettings 2>/dev/null \
+		-derivedDataPath $(DEV_DERIVED) -configuration Debug -showBuildSettings 2>/dev/null \
 		| awk -F' = ' '/ BUILT_PRODUCTS_DIR/ {print $$2; exit}')/Codenotch.app; \
 	pkill -x Codenotch 2>/dev/null; sleep 0.5; \
 	open "$$APP"
@@ -103,12 +125,13 @@ run: build
 # identity rather than left unsigned.
 install: gen
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(DEST)' \
-		-configuration Release $(DEV_SIGN) build
+		-derivedDataPath $(DEV_DERIVED) -configuration Release $(DEV_SIGN) build
 	@APP=$$(xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination '$(DEST)' \
-		-configuration Release -showBuildSettings 2>/dev/null \
+		-derivedDataPath $(DEV_DERIVED) -configuration Release -showBuildSettings 2>/dev/null \
 		| awk -F' = ' '/ BUILT_PRODUCTS_DIR/ {print $$2; exit}')/Codenotch.app; \
 	pkill -x Codenotch || true; \
 	cp -R "$$APP" /Applications/; \
+	$(LSREGISTER) -u "$$APP" 2>/dev/null; \
 	open /Applications/Codenotch.app
 
 clean:
@@ -265,7 +288,8 @@ verify-release:
 # token prompt comes back after every single update, which is exactly what
 # project.yml's stable identity exists to prevent.
 CI_DIR     := build/ci
-CI_DERIVED := $(CI_DIR)/DerivedData
+# `.noindex` for the reason given at DEV_DERIVED.
+CI_DERIVED := $(CI_DIR)/DerivedData.noindex
 CI_APP     := $(CI_DERIVED)/Build/Products/Release/$(APP_NAME).app
 CI_DMG     := $(CI_DIR)/$(APP_NAME)-$(VERSION)-unsigned.dmg
 # Absolute: xcodebuild resolves CODE_SIGN_ENTITLEMENTS against the project
@@ -330,6 +354,7 @@ build-ci: gen
 	@codesign -d --entitlements - --xml $(CI_APP) 2>/dev/null \
 		| grep -q 'get-task-allow' \
 		&& { echo "get-task-allow survived the re-sign"; exit 1; } || true
+	$(call UNREGISTER,$(CI_APP))
 
 # A disk image for the same reason releases ship one, plus one specific to CI:
 # GitHub's artifact upload zips whatever it is given and drops symlinks and the

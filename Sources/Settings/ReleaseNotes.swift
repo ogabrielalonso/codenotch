@@ -32,7 +32,18 @@ enum ReleaseNotes {
     static var all: [ReleaseNote] {
         [
             // This fork's own builds: Codenotch 1.14.0 plus the changes below,
-            // numbered after the release they are based on.
+            // numbered after the release they are based on. From g4.0.1 on the
+            // fork's part is g<major>.<minor>.<patch>, the way upstream counts.
+            ReleaseNote(
+                version: "1.14.0-g4.0.1",
+                headline: L10n.t("Installing takes a single drag."),
+                changes: [
+                    ReleaseNote.Change(
+                        title: L10n.t("Install window"),
+                        detail: L10n.t("The disk image now opens on a window made for installing: Codenotch on one side, the Applications folder on the other, and an arrow between them.")
+                    ),
+                ]
+            ),
             ReleaseNote(
                 version: "1.14.0-gabriel.4",
                 headline: L10n.t("This fork's notes in every language."),

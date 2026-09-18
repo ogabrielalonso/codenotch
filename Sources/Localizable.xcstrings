@@ -1,6 +1,162 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Installing takes a single drag.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для установки достаточно одного перетаскивания."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un seul glisser suffit pour installer."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "インストールはドラッグひとつで完了します。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para instalar, basta arrastar."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拖一下就能安装。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拖一下就能安裝。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Installieren genügt ein Ziehen."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Для встановлення достатньо одного перетягування."
+          }
+        }
+      }
+    },
+    "Install window": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Окно установки"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fenêtre d'installation"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "インストール用ウインドウ"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Janela de instalação"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安装窗口"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "安裝視窗"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installationsfenster"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вікно встановлення"
+          }
+        }
+      }
+    },
+    "The disk image now opens on a window made for installing: Codenotch on one side, the Applications folder on the other, and an arrow between them.": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Образ диска теперь открывается в окне, предназначенном для установки: Codenotch с одной стороны, папка «Программы» с другой и стрелка между ними."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'image disque s'ouvre désormais dans une fenêtre pensée pour l'installation : Codenotch d'un côté, le dossier Applications de l'autre, et une flèche entre les deux."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ディスクイメージを開くと、インストール用のウインドウが表示されるようになりました。片側に Codenotch、反対側に「アプリケーション」フォルダ、その間に矢印があります。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A imagem de disco agora abre numa janela feita para instalar: o Codenotch de um lado, a pasta Aplicativos do outro e uma seta entre os dois."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "磁盘映像现在会打开一个专为安装准备的窗口：一边是 Codenotch，另一边是「应用程序」文件夹，中间有一个箭头。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "磁碟映像檔現在會打開一個專為安裝準備的視窗：一邊是 Codenotch，另一邊是「應用程式」資料夾，中間有一個箭頭。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Festplattenimage öffnet jetzt ein Fenster zum Installieren: Codenotch auf der einen Seite, der Programme-Ordner auf der anderen und ein Pfeil dazwischen."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Образ диска тепер відкривається у вікні, створеному для встановлення: Codenotch з одного боку, тека «Програми» з іншого і стрілка між ними."
+          }
+        }
+      }
+    },
     "This fork's notes in every language.": {
       "localizations": {
         "ru": {

@@ -28,6 +28,8 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
     let phoneLinkRegistry: PhoneLinkRegistry?
     let phoneLinkServerStatus: PhoneLinkServerStatus?
     private let resetPosition: () -> Void
+    private let positionRange: () -> ClosedRange<CGFloat>?
+    private let setPosition: (CGFloat) -> Void
     private let quit: () -> Void
     private let previewResetAlert: (() -> Void)?
     private let previewSessionLimitAlert: (() -> Void)?
@@ -41,6 +43,8 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
          switchAccount: @escaping (String) -> Bool,
          retry: @escaping (String) -> Void,
          resetPosition: @escaping () -> Void,
+         positionRange: @escaping () -> ClosedRange<CGFloat>? = { nil },
+         setPosition: @escaping (CGFloat) -> Void = { _ in },
          quit: @escaping () -> Void,
          previewResetAlert: (() -> Void)? = nil,
          previewSessionLimitAlert: (() -> Void)? = nil,
@@ -55,6 +59,8 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
         self.phoneLinkRegistry = phoneLinkRegistry
         self.phoneLinkServerStatus = phoneLinkServerStatus
         self.resetPosition = resetPosition
+        self.positionRange = positionRange
+        self.setPosition = setPosition
         self.quit = quit
         self.previewResetAlert = previewResetAlert
         self.previewSessionLimitAlert = previewSessionLimitAlert
@@ -262,6 +268,8 @@ final class SettingsWindowController: NSObject, NSWindowDelegate {
                                    switchAccount: switchAccount,
                                    retry: retry,
                                    resetPosition: resetPosition,
+                                   positionRange: positionRange,
+                                   setPosition: setPosition,
                                    quit: quit,
                                    updater: updater,
                                    ollamaRelay: ollamaRelay, lmstudioMetrics: lmstudioMetrics,

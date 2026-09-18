@@ -302,3 +302,143 @@ final class ScaledMeasurementTests: XCTestCase {
                        marginBound * 2, accuracy: 0.001)
     }
 }
+
+/// Where the notch can go along its edge, and where a carry from the move
+/// handle leaves it. The range has to agree with `panelFrame`'s clamp exactly:
+/// a slider end the notch cannot follow, or an offset stored past the end, is
+/// a dead stretch the next drag has to cross before anything moves.
+final class NotchPositionTests: XCTestCase {
+    private let screen = FakeScreen(
+        frameValue: CGRect(x: 0, y: 0, width: 1800, height: 1169),
+        visibleFrameValue: CGRect(x: 0, y: 0, width: 1800, height: 1132)
+    )
+
+    @MainActor
+    private func frame(_ offset: CGFloat, on edge: NotchEdge, of model: NotchViewModel) -> CGRect {
+        NotchGeometry.panelFrame(for: screen, panelSize: model.panelSize, edge: edge,
+                                 alongOffset: offset, slack: model.slack,
+                                 trailingExtent: model.trailingExtent)
+    }
+
+    @MainActor
+    func testTheRangeEndsExactlyWhereTheClampDoes() {
+        for edge in NotchEdge.allCases {
+            let model = NotchViewModel()
+            model.edge = edge
+            let range = NotchGeometry.alongOffsetRange(
+                for: screen, panelSize: model.panelSize, edge: edge,
+                slack: model.slack, trailingExtent: model.trailingExtent
+            )
+            XCTAssertLessThan(range.lowerBound, 0, "\(edge)")
+            XCTAssertGreaterThan(range.upperBound, 0, "\(edge)")
+            XCTAssertEqual(frame(range.lowerBound, on: edge, of: model),
+                           frame(-10_000, on: edge, of: model), "\(edge)")
+            XCTAssertEqual(frame(range.upperBound, on: edge, of: model),
+                           frame(10_000, on: edge, of: model), "\(edge)")
+            // Just inside either end still moves it: no narrower than the clamp.
+            XCTAssertNotEqual(frame(range.lowerBound + 5, on: edge, of: model),
+                              frame(-10_000, on: edge, of: model), "\(edge)")
+            XCTAssertNotEqual(frame(range.upperBound - 5, on: edge, of: model),
+                              frame(10_000, on: edge, of: model), "\(edge)")
+        }
+    }
+
+    func testAPillLongerThanTheScreenHasOnePlace() {
+        let tiny = FakeScreen(frameValue: CGRect(x: 0, y: 0, width: 120, height: 90),
+                              visibleFrameValue: CGRect(x: 0, y: 0, width: 120, height: 90))
+        let size = CGSize(width: 400, height: 400)
+        for edge in NotchEdge.allCases {
+            let range = NotchGeometry.alongOffsetRange(for: tiny, panelSize: size, edge: edge)
+            XCTAssertEqual(range.lowerBound, range.upperBound, "\(edge)")
+            XCTAssertEqual(
+                NotchGeometry.panelFrame(for: tiny, panelSize: size, edge: edge, alongOffset: range.lowerBound),
+                NotchGeometry.panelFrame(for: tiny, panelSize: size, edge: edge, alongOffset: 0),
+                "\(edge)"
+            )
+        }
+    }
+
+    @MainActor
+    func testCentringOnAPointPutsTheNotchThere() {
+        let point = CGPoint(x: 1200, y: 800)
+        for edge in NotchEdge.allCases {
+            let model = NotchViewModel()
+            model.edge = edge
+            let offset = NotchGeometry.alongOffset(centring: point, on: edge, in: screen)
+            let placed = frame(offset, on: edge, of: model)
+            if edge.isVertical {
+                XCTAssertEqual(placed.midY, point.y, accuracy: 1, "\(edge)")
+            } else {
+                XCTAssertEqual(placed.midX, point.x, accuracy: 1, "\(edge)")
+            }
+        }
+    }
+
+    func testACarryBackOntoItsOwnEdgeSlidesByTheDistanceMoved() {
+        let press = CGPoint(x: 1790, y: 700)
+        XCTAssertEqual(
+            NotchGeometry.carriedOffset(from: .right, at: 40, pressedAt: press,
+                                        to: .right, releasedAt: press, in: screen),
+            40, "a press that never moves leaves the notch where it was"
+        )
+        // 80pt further down the screen; AppKit's y grows up.
+        XCTAssertEqual(
+            NotchGeometry.carriedOffset(from: .right, at: 40, pressedAt: press,
+                                        to: .right, releasedAt: CGPoint(x: 1770, y: 620), in: screen),
+            120
+        )
+        XCTAssertEqual(
+            NotchGeometry.carriedOffset(from: .top, at: -30, pressedAt: CGPoint(x: 900, y: 1160),
+                                        to: .top, releasedAt: CGPoint(x: 980, y: 1150), in: screen),
+            50
+        )
+    }
+
+    func testACarryToAnotherEdgeCentresWhereItLetGo() {
+        let press = CGPoint(x: 1790, y: 700)
+        XCTAssertEqual(
+            NotchGeometry.carriedOffset(from: .right, at: 40, pressedAt: press,
+                                        to: .bottom, releasedAt: CGPoint(x: 1100, y: 10), in: screen),
+            200
+        )
+        XCTAssertEqual(
+            NotchGeometry.carriedOffset(from: .right, at: 40, pressedAt: press,
+                                        to: .left, releasedAt: CGPoint(x: 5, y: 300), in: screen),
+            284.5
+        )
+    }
+
+    @MainActor
+    func testTheTargetZoneShowsWhereTheNotchWouldLand() {
+        let size = CGSize(width: 1800, height: 1169)
+        let zones = EdgeDropZones(target: .right, targetOffset: 200, size: size,
+                                  restingDepth: 40, restingLength: 160)
+        XCTAssertEqual(zones.frame(for: .right).midY, size.height / 2 + 200, accuracy: 0.5)
+        XCTAssertEqual(zones.frame(for: .left).midY, size.height / 2, accuracy: 0.5,
+                       "the zones not under the pointer stay centred")
+
+        let far = EdgeDropZones(target: .top, targetOffset: 10_000, size: size,
+                                restingDepth: 40, restingLength: 160)
+        XCTAssertEqual(far.frame(for: .top).maxX, size.width, "kept whole on screen")
+    }
+
+    /// A notch slid to the top of the right edge has its handle nearer the top
+    /// edge than the right one. A click on it is not a move.
+    @MainActor
+    func testAClickOnTheHandleNearACornerKeepsTheEdge() {
+        let size = CGSize(width: 1800, height: 1169)
+        let nearTheCorner = CGPoint(x: 1780, y: 8)
+        XCTAssertEqual(EdgeDropZones.target(from: .right, hasMoved: false, at: nearTheCorner, in: size),
+                       .right)
+        XCTAssertEqual(EdgeDropZones.target(from: .right, hasMoved: true, at: nearTheCorner, in: size),
+                       .top)
+    }
+
+    func testDisplaysShareOnlyTheOffsetsEveryOneCanShow() {
+        XCTAssertEqual(NotchGeometry.sharedRange([-400...400, -250...600]), -250...400)
+        XCTAssertNil(NotchGeometry.sharedRange([]), "no display, no range")
+        XCTAssertNil(NotchGeometry.sharedRange([-400...400, nil]), "one of them is mid-move")
+        XCTAssertNil(NotchGeometry.sharedRange([-400...(-300), 300...400]),
+                     "nothing in common, and no end is more right than another")
+    }
+}

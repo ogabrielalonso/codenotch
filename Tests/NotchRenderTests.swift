@@ -611,6 +611,97 @@ final class EdgeCrossfadeTests: XCTestCase {
         XCTAssertEqual(controller.panelAlphaForTesting, 1,
                        "it faded for a move it was not making")
     }
+
+    /// A carry to another edge hands over the offset with the edge. It must
+    /// place the notch on arrival, not slide it along the edge it is leaving.
+    func testAnOffsetForTheNewEdgeWaitsForTheMove() throws {
+        let controller = NotchWindowController()
+        controller.show()
+        defer { controller.stop() }
+
+        let before = controller.panelFrameForTesting
+        controller.apply(edge: .top, alongOffset: 300)
+        pump(0.08)
+        XCTAssertEqual(controller.panelFrameForTesting, before,
+                       "the notch slid along the edge it was leaving")
+
+        pump(1.0)
+        XCTAssertEqual(controller.model.edge, .top)
+        let range = try XCTUnwrap(controller.alongOffsetRange(on: .top))
+        let expected = min(max(300, range.lowerBound), range.upperBound)
+        let screen = try XCTUnwrap(NotchGeometry.preferredScreen(from: NSScreen.screens))
+        XCTAssertEqual(try XCTUnwrap(controller.panelFrameForTesting).midX,
+                       screen.frame.midX + expected, accuracy: 1,
+                       "it did not land at the offset it was sent with")
+    }
+
+    /// Sent back to the edge it is leaving before it lands, the move is called
+    /// off: the notch stays where it was, and its range can be read again.
+    func testGoingBackBeforeItLandsCallsTheMoveOff() {
+        let controller = NotchWindowController()
+        controller.show()
+        defer { controller.stop() }
+        let origin = controller.model.edge
+        let before = controller.panelFrameForTesting
+        var landed = 0
+        controller.onEdgeLanded = { landed += 1 }
+
+        controller.apply(edge: origin == .top ? .bottom : .top)
+        pump(0.04)
+        controller.apply(edge: origin)
+        pump(1.0)
+
+        XCTAssertEqual(controller.model.edge, origin, "the called-off move landed anyway")
+        XCTAssertEqual(controller.panelAlphaForTesting, 1, accuracy: 0.01)
+        XCTAssertEqual(controller.panelFrameForTesting, before)
+        XCTAssertNotNil(controller.alongOffsetRange(on: origin))
+        XCTAssertEqual(landed, 1)
+    }
+
+    /// Recentre pressed mid-move is for the edge the notch is heading to, and
+    /// has to be where it lands rather than the offset the move set out with.
+    func testAnOffsetAskedForMidMoveIsWhereItLands() throws {
+        let controller = NotchWindowController()
+        controller.show()
+        defer { controller.stop() }
+        let target: NotchEdge = controller.model.edge == .top ? .bottom : .top
+
+        controller.apply(edge: target, alongOffset: 300)
+        pump(0.04)
+        controller.apply(alongOffset: 0)
+        pump(1.0)
+
+        XCTAssertEqual(controller.model.edge, target)
+        XCTAssertEqual(controller.model.alongOffset, 0)
+        let screen = try XCTUnwrap(NotchGeometry.preferredScreen(from: NSScreen.screens))
+        XCTAssertEqual(try XCTUnwrap(controller.panelFrameForTesting).midX,
+                       screen.frame.midX, accuracy: 1)
+    }
+
+    /// Settings' position slider spans this range. Read mid-move it would be
+    /// the old edge's, so it is withheld until the notch lands and says so.
+    func testTheRangeWaitsUntilTheNotchHasLanded() throws {
+        let controller = NotchWindowController()
+        controller.show()
+        defer { controller.stop() }
+        var landed = 0
+        controller.onEdgeLanded = { landed += 1 }
+
+        XCTAssertNotNil(controller.alongOffsetRange(on: controller.model.edge))
+        controller.apply(edge: .top)
+        XCTAssertNil(controller.alongOffsetRange(on: .top), "read before it moved")
+
+        pump(1.0)
+        XCTAssertEqual(landed, 1)
+        let screen = try XCTUnwrap(NotchGeometry.preferredScreen(from: NSScreen.screens))
+        XCTAssertEqual(
+            controller.alongOffsetRange(on: .top),
+            NotchGeometry.alongOffsetRange(
+                for: screen, panelSize: controller.model.panelSize, edge: .top,
+                slack: controller.model.slack, trailingExtent: controller.model.trailingExtent
+            )
+        )
+    }
 }
 
 /// Arriving at the new edge should look like the notch opening, not like a bar

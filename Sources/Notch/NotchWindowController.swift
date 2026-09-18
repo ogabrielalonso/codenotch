@@ -30,9 +30,18 @@ final class NotchWindowController {
     /// controller only holds the live value; persisting it per edge is
     /// Preferences' job, the same division `apply(edge:)` already keeps.
     var onReposition: ((CGFloat) -> Void)?
-    /// A move settled on a new edge. The fleet owns writing that to
-    /// preferences, for the same reason it owns `onReposition`.
-    var onMoveToEdge: ((NotchEdge) -> Void)?
+    /// A move settled on an edge, at an offset along it: another edge, or a
+    /// new place on this one. The fleet owns writing that to preferences, for
+    /// the same reason it owns `onReposition`.
+    var onMoveToEdge: ((NotchEdge, CGFloat) -> Void)?
+    /// The notch arrived on the edge `apply(edge:)` sent it to.
+    var onEdgeLanded: (() -> Void)?
+    /// The edge a crossfade is carrying the notch to, until it lands. While it
+    /// is set, `model.edge` still names the edge being left.
+    private var landingEdge: NotchEdge?
+    /// The offset that move lands at, if it was given one. Read on arrival
+    /// rather than captured, so an offset asked for mid-move still counts.
+    private var landingOffset: CGFloat?
 
     private var panel: NotchPanel?
     private var hostingView: NotchHostingView<NotchRootView>?
@@ -844,9 +853,26 @@ final class NotchWindowController {
     }
 
     func apply(alongOffset: CGFloat) {
+        // Mid-move the model still measures the edge being left, so the offset
+        // waits for the arrival instead of sliding the notch along that edge.
+        if landingEdge != nil {
+            landingOffset = alongOffset
+            return
+        }
         guard model.alongOffset != alongOffset else { return }
         model.alongOffset = alongOffset
         relocate()
+    }
+
+    /// The offsets this notch can be drawn at along `edge`, from the same
+    /// inputs `relocate` hands `NotchGeometry.panelFrame`. Nil until it has
+    /// landed on that edge: before then the model still measures the old one.
+    func alongOffsetRange(on edge: NotchEdge) -> ClosedRange<CGFloat>? {
+        guard landingEdge == nil, model.edge == edge, let screen = currentScreen() else { return nil }
+        return NotchGeometry.alongOffsetRange(
+            for: screen, panelSize: model.panelSize, edge: edge,
+            slack: model.slack, trailingExtent: model.trailingExtent
+        )
     }
 
     func apply(scale: CGFloat) {
@@ -907,7 +933,8 @@ final class NotchWindowController {
     private var dropZones: DropZoneOverlay?
 
     /// Carries the notch: raises the drop zones, follows the pointer until the
-    /// button lifts, and hands the edge it landed on to `onMoveToEdge`.
+    /// button lifts, and hands the edge it landed on, and where along it, to
+    /// `onMoveToEdge`.
     ///
     /// Driven from the pointer's own position rather than from drag deltas,
     /// because what is being chosen is a *place on the screen*, not a distance
@@ -925,7 +952,25 @@ final class NotchWindowController {
         // Starts on the edge it is already on, so releasing without moving is
         // a no-op rather than a jump to whichever edge the maths rounds to.
         model.moveTarget = model.edge
-        overlay.show(target: model.edge,
+
+        // Where the notch is drawn now, which a ⌥-drag past the end of the
+        // edge may have left the stored offset beyond.
+        let press = NSEvent.mouseLocation
+        let range = alongOffsetRange(on: model.edge)
+        let current = range.map { min(max(model.alongOffset, $0.lowerBound), $0.upperBound) }
+            ?? model.alongOffset
+        func landing(on target: NotchEdge) -> CGFloat {
+            let offset = NotchGeometry.carriedOffset(
+                from: model.edge, at: current, pressedAt: press,
+                to: target, releasedAt: NSEvent.mouseLocation, in: screen
+            )
+            // Only this edge's range is known here; another edge's pill has a
+            // different length, and `panelFrame` clamps it there on arrival.
+            guard target == model.edge, let range else { return offset }
+            return min(max(offset, range.lowerBound), range.upperBound)
+        }
+
+        overlay.show(target: model.edge, targetOffset: current,
                      restingDepth: model.restingDepth * model.sizeScale,
                      restingLength: model.shapeLength * model.sizeScale)
 
@@ -936,20 +981,29 @@ final class NotchWindowController {
             dropZones = nil
         }
 
+        var hasMoved = false
         while let event = panel.nextEvent(matching: [.leftMouseDragged, .leftMouseUp]) {
-            let local = overlay.localPoint(from: NSEvent.mouseLocation)
-            let target = EdgeDropZones.edge(at: local, in: overlay.screenSize)
+            let pointer = NSEvent.mouseLocation
+            hasMoved = hasMoved
+                || hypot(pointer.x - press.x, pointer.y - press.y) > EdgeDropZones.carrySlop
+            let target = EdgeDropZones.target(
+                from: model.edge, hasMoved: hasMoved,
+                at: overlay.localPoint(from: pointer), in: overlay.screenSize
+            )
 
             switch event.type {
             case .leftMouseDragged:
                 if model.moveTarget != target {
                     model.moveTarget = target
                 }
-                overlay.show(target: target,
+                overlay.show(target: target, targetOffset: landing(on: target),
                              restingDepth: model.restingDepth * model.sizeScale,
                              restingLength: model.shapeLength * model.sizeScale)
             case .leftMouseUp:
-                if target != model.edge { onMoveToEdge?(target) }
+                let offset = landing(on: target)
+                if target != model.edge || offset != current {
+                    onMoveToEdge?(target, offset)
+                }
                 return
             default:
                 return
@@ -959,11 +1013,40 @@ final class NotchWindowController {
 
     private var lastRelocate = Date.distantPast
     private var pendingRelocate: DispatchWorkItem?
-    func apply(edge: NotchEdge) {
-        guard model.edge != edge else { return }
+
+    /// Moves the notch to `edge`, and to `alongOffset` along it when given.
+    ///
+    /// The offset travels with the move and is set only on arrival. Set any
+    /// sooner, the next `relocate` (a refresh, a display change) would slide
+    /// the notch along the edge it is leaving, by a distance measured on the
+    /// one it is heading for.
+    func apply(edge: NotchEdge, alongOffset: CGFloat? = nil) {
+        // Sent back to the edge it is still on before the last move landed:
+        // that move is called off, rather than left to land on an edge the
+        // user has already turned away from.
+        if landingEdge != nil, edge == model.edge {
+            edgeChange += 1
+            landingEdge = nil
+            landingOffset = nil
+            if let panel {
+                NSAnimationContext.runAnimationGroup { context in
+                    context.duration = Self.edgeCrossfade
+                    panel.animator().alphaValue = 1
+                }
+            }
+            if let alongOffset { apply(alongOffset: alongOffset) }
+            onEdgeLanded?()
+            return
+        }
+        guard model.edge != edge else {
+            if let alongOffset { apply(alongOffset: alongOffset) }
+            return
+        }
         guard let panel else {   // before there is anything on screen to fade
+            if let alongOffset { model.alongOffset = alongOffset }
             model.edge = edge
             relocate()
+            onEdgeLanded?()
             return
         }
 
@@ -976,6 +1059,8 @@ final class NotchWindowController {
         // user has already moved on from.
         edgeChange += 1
         let change = edgeChange
+        landingEdge = edge
+        landingOffset = alongOffset
 
         NSAnimationContext.runAnimationGroup { context in
             context.duration = Self.edgeCrossfade
@@ -986,11 +1071,15 @@ final class NotchWindowController {
 
                 // Land folded, and at full strength: the opening *is* the
                 // animation, and fading in underneath it would be two at once.
+                if let offset = self.landingOffset { self.model.alongOffset = offset }
                 self.model.edge = edge
                 self.model.isExpanded = false
                 self.relocate()
                 self.updateInteractiveRects()
                 panel.alphaValue = 1
+                self.landingEdge = nil
+                self.landingOffset = nil
+                self.onEdgeLanded?()
 
                 guard wasOpen else { return }
                 // A beat, then open. Not decoration: setting it shut and open

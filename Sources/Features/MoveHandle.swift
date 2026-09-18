@@ -8,8 +8,9 @@ import SwiftUI
 /// which turns as it arrives. Holding it starts a move.
 ///
 /// The hand rather than arrows because the gesture is a carry, not a nudge: you
-/// pick the notch up and put it on another edge. Arrows would suggest the
-/// ⌥-drag that already exists, which slides it *along* the edge it is on.
+/// pick the notch up and put it down, on another edge or further along this
+/// one, wherever you let go. Arrows would suggest the ⌥-drag that already
+/// exists, which slides it *along* the edge it is on.
 struct MoveHandle: View {
     let isHovered: Bool
     /// True once the handle has been held and the notch is waiting to be

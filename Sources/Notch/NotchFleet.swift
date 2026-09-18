@@ -80,9 +80,13 @@ final class NotchFleet {
     /// An ⌥-drag on any one panel settled at a new offset. Persisting it is
     /// Preferences' job, same division `apply(edge:)` already keeps.
     var onReposition: ((CGFloat) -> Void)?
-    /// A move handle carried a notch to another edge. Persisting it is
-    /// Preferences' job, the same division `onReposition` keeps.
-    var onMoveToEdge: ((NotchEdge) -> Void)?
+    /// A move handle carried a notch to an edge, and to a place along it.
+    /// Persisting it is Preferences' job, the same division `onReposition`
+    /// keeps.
+    var onMoveToEdge: ((NotchEdge, CGFloat) -> Void)?
+    /// A notch arrived on the edge it was sent to, and its offsets along that
+    /// edge can be read.
+    var onEdgeLanded: (() -> Void)?
 
     /// What the fleet settled on, for tests that need to see panels come and
     /// go rather than take our word for it.
@@ -133,13 +137,6 @@ final class NotchFleet {
         self.scope = scope
         guard hasShown else { return }
         reconcile(screens: NSScreen.screens)
-    }
-
-    func apply(edge: NotchEdge) {
-        self.edge = edge
-        for controller in controllers.values {
-            controller.apply(edge: edge)
-        }
     }
 
     func apply(_ visibility: NotchVisibility) {
@@ -235,6 +232,23 @@ final class NotchFleet {
         for controller in controllers.values {
             controller.apply(alongOffset: alongOffset)
         }
+    }
+
+    /// A new edge and the offset along it, handed over together for the
+    /// reason `NotchWindowController.apply(edge:alongOffset:)` gives.
+    func apply(edge: NotchEdge, alongOffset: CGFloat) {
+        self.edge = edge
+        self.alongOffset = alongOffset
+        for controller in controllers.values {
+            controller.apply(edge: edge, alongOffset: alongOffset)
+        }
+    }
+
+    /// The offsets every notch in the fleet can be drawn at along `edge`. One
+    /// offset drives them all, so a range spanning a larger display's would
+    /// have an end a smaller one cannot follow.
+    func alongOffsetRange(on edge: NotchEdge) -> ClosedRange<CGFloat>? {
+        NotchGeometry.sharedRange(controllers.values.map { $0.alongOffsetRange(on: edge) })
     }
 
     /// Through `controller.apply(size:)` rather than by setting the model
@@ -434,6 +448,7 @@ final class NotchFleet {
         controller.model.onFocusSession = onFocusSession
         controller.onReposition = onReposition
         controller.onMoveToEdge = onMoveToEdge
+        controller.onEdgeLanded = onEdgeLanded
         controller.onToggleKeepOpen = onToggleKeepOpen
         controller.signInItems = signInItems
         controller.model.updateSnapshots(snapshots)

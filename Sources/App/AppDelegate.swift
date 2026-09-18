@@ -331,6 +331,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                     preferences?.setOffset(0, for: preferences?.notchEdge ?? .right)
                     fleet?.apply(alongOffset: 0)
                 },
+                positionRange: { [weak fleet, weak preferences] in
+                    guard let preferences else { return nil }
+                    return fleet?.alongOffsetRange(on: preferences.notchEdge)
+                },
+                // Both halves, for the same reason as `resetPosition`.
+                setPosition: { [weak fleet, weak preferences] offset in
+                    preferences?.setOffset(offset, for: preferences?.notchEdge ?? .right)
+                    fleet?.apply(alongOffset: offset)
+                },
                 quit: { NSApp.terminate(nil) },
                 previewResetAlert: { [weak self] in
                     self?.previewUsageResetAlert()
@@ -424,11 +433,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             preferences.$notchEdge
                 .receive(on: RunLoop.main)
                 .sink { [weak fleet, weak preferences] edge in
-                    // Read before `apply(edge:)` moves the panel, so the new
-                    // edge's own remembered nudge is what it lands at rather
-                    // than the old edge's carried over onto it.
-                    fleet?.apply(alongOffset: preferences?.offset(for: edge) ?? 0)
-                    fleet?.apply(edge: edge)
+                    // Handed over with the edge rather than before it, so the
+                    // new edge's own remembered nudge is what it lands at,
+                    // without first sliding the notch along the old edge by it.
+                    fleet?.apply(edge: edge, alongOffset: preferences?.offset(for: edge) ?? 0)
                 }
                 .store(in: &cancellables)
 
@@ -488,11 +496,42 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 prefs.notchVisibility = (prefs.notchVisibility == .alwaysShow) ? .onHover : .alwaysShow
             }
 
-            // Writing the preference is the whole of it: `notchEdge` is
-            // `@Published` and the fleet already follows it, so the notch
-            // relocates by the same path the Settings picker uses.
-            fleet.onMoveToEdge = { [weak preferences] edge in
-                preferences?.notchEdge = edge
+            // Writing the preferences is the whole of it for another edge:
+            // `notchEdge` is `@Published` and the fleet already follows it,
+            // reading that edge's offset as it goes, which is why the offset
+            // is written first. Back on the same edge nothing is published,
+            // so the fleet is moved directly, every display with it.
+            fleet.onMoveToEdge = { [weak preferences, weak fleet] edge, offset in
+                guard let preferences else { return }
+                guard preferences.notchEdge == edge else {
+                    preferences.setOffset(offset, for: edge)
+                    preferences.notchEdge = edge
+                    return
+                }
+                // Held to what every display can show, the same range the
+                // Settings slider spans: one offset drives them all.
+                let range = fleet?.alongOffsetRange(on: edge)
+                let held = range.map { min(max(offset, $0.lowerBound), $0.upperBound) } ?? offset
+                preferences.setOffset(held, for: edge)
+                fleet?.apply(alongOffset: held)
+            }
+
+            // The new edge's range exists only once every notch has landed on
+            // it, so this is where a carry to another edge is held to what
+            // every display can show. Settings' position slider reads that
+            // range too, and nothing it observes changes now, so it is told.
+            fleet.onEdgeLanded = { [weak preferences, weak fleet] in
+                guard let preferences else { return }
+                let edge = preferences.notchEdge
+                if let range = fleet?.alongOffsetRange(on: edge) {
+                    let stored = preferences.offset(for: edge)
+                    let held = min(max(stored, range.lowerBound), range.upperBound)
+                    if held != stored {
+                        preferences.setOffset(held, for: edge)
+                        fleet?.apply(alongOffset: held)
+                    }
+                }
+                preferences.objectWillChange.send()
             }
 
             preferences.$resetTimeFormat

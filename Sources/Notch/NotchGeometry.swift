@@ -119,6 +119,80 @@ enum NotchGeometry {
         )
     }
 
+    /// The offsets `panelFrame` can actually honour on this screen, read off
+    /// the same clamp it applies: anything past either end draws exactly where
+    /// that end does. Settings' position slider spans this, and a carry back
+    /// onto the notch's own edge is held to it, so neither stores a place the
+    /// notch cannot be drawn at.
+    static func alongOffsetRange(
+        for screen: ScreenDescribing,
+        panelSize: CGSize,
+        edge: NotchEdge,
+        slack: CGFloat = 0,
+        trailingExtent: CGFloat = 0
+    ) -> ClosedRange<CGFloat> {
+        let full = screen.frameValue
+        if edge.isVertical {
+            // `panelFrame` places y at midY - height/2 - offset.
+            let height = panelSize.height.rounded(.up)
+            let start = full.midY - height / 2
+            let lower = start - (full.maxY - height + slack)
+            let upper = start - (full.minY - slack + trailingExtent)
+            // A pill longer than the screen has nowhere to slide, and `clamp`
+            // pins it to its low y, which is this range's upper end.
+            return lower <= upper ? lower...upper : upper...upper
+        } else {
+            // `panelFrame` places x at midX - width/2 + offset.
+            let width = panelSize.width.rounded(.up)
+            let start = full.midX - width / 2
+            let lower = (full.minX - slack) - start
+            let upper = (full.maxX - width + slack - trailingExtent) - start
+            return lower <= upper ? lower...upper : lower...lower
+        }
+    }
+
+    /// The offsets every one of several notches can be drawn at, since one
+    /// offset drives them all. Nil when any of them has no range to offer yet,
+    /// or when they have none in common: no end is then more right than
+    /// another, and picking one would depend on which display came first.
+    static func sharedRange(_ ranges: [ClosedRange<CGFloat>?]) -> ClosedRange<CGFloat>? {
+        let known = ranges.compactMap { $0 }
+        guard !known.isEmpty, known.count == ranges.count,
+              let lower = known.map(\.lowerBound).max(),
+              let upper = known.map(\.upperBound).min(),
+              lower <= upper else { return nil }
+        return lower...upper
+    }
+
+    /// The offset that centres the notch on `point` along `edge`, in the
+    /// convention `panelFrame` reads: down a side edge, rightward along a
+    /// horizontal one.
+    static func alongOffset(centring point: CGPoint, on edge: NotchEdge,
+                            in screen: ScreenDescribing) -> CGFloat {
+        let full = screen.frameValue
+        return edge.isVertical ? full.midY - point.y : point.x - full.midX
+    }
+
+    /// Where a carry from the move handle leaves the notch.
+    ///
+    /// Back on its own edge it slides by however far the pointer travelled
+    /// along it, the way the ⌥-drag does, so a press that never moves leaves
+    /// it where it was instead of jumping to centre on the handle. On another
+    /// edge there is no distance to carry over, so it centres where the
+    /// pointer let go.
+    static func carriedOffset(
+        from edge: NotchEdge,
+        at offset: CGFloat,
+        pressedAt press: CGPoint,
+        to target: NotchEdge,
+        releasedAt release: CGPoint,
+        in screen: ScreenDescribing
+    ) -> CGFloat {
+        let landing = alongOffset(centring: release, on: target, in: screen)
+        guard target == edge else { return landing }
+        return offset + landing - alongOffset(centring: press, on: edge, in: screen)
+    }
+
     static func preferredScreen(
         from screens: [NSScreen],
         preference: DisplayPreference = .followActiveWindow

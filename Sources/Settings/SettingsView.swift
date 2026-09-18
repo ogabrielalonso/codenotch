@@ -1042,7 +1042,7 @@ struct SettingsView: View {
                 .padding(.top, 4)
             }
 
-            // Apart from the notch's own group: these are about the app, not
+            // Apart from the notch's own groups: these are about the app, not
             // the thing it draws on the screen edge.
             Section(L10n.t("App")) {
                 LabeledContent(L10n.t("Accent color")) {

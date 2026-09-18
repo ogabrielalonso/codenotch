@@ -335,14 +335,27 @@ build-ci: gen
 # GitHub's artifact upload zips whatever it is given and drops symlinks and the
 # executable bit on the way, which takes an .app bundle apart — the framework
 # inside it is symlinks. A dmg arrives as a single opaque file instead.
-dmg-ci: build-ci
-	rm -rf $(CI_DIR)/stage
-	mkdir -p $(CI_DIR)/stage
-	cp -R $(CI_APP) $(CI_DIR)/stage/
-	ln -s /Applications $(CI_DIR)/stage/Applications
+#
+# It opens on a laid-out window rather than Finder's default: the app, an
+# arrow and Applications, over a background Scripts/dmg-background.swift
+# draws. dmgbuild writes the window's settings straight into the image, so
+# nothing has to script Finder and it runs on a runner as well as a Mac.
+DMG_VENV := build/dmg-venv
+DMGBUILD := $(DMG_VENV)/bin/dmgbuild
+DMG_ART  := $(CI_DIR)/dmg-art
+
+$(DMGBUILD):
+	python3 -m venv $(DMG_VENV)
+	$(DMG_VENV)/bin/pip install --quiet dmgbuild==1.6.7
+
+dmg-ci: build-ci $(DMGBUILD)
+	swift Scripts/dmg-background.swift $(DMG_ART)
+	tiffutil -cathidpicheck $(DMG_ART)/background.png $(DMG_ART)/background@2x.png \
+		-out $(DMG_ART)/background.tiff
 	for i in 1 2 3; do \
-		hdiutil create -volname "$(APP_NAME)" -srcfolder $(CI_DIR)/stage \
-			-ov -format UDZO $(CI_DMG) && break || sleep 2; \
+		$(DMGBUILD) -s Scripts/dmg-settings.py -D app=$(CI_APP) -D art=$(DMG_ART) \
+			"$(APP_NAME)" $(CI_DMG) && break || sleep 2; \
 	done
-	rm -rf $(CI_DIR)/stage
+	@test -f $(CI_DMG) || { echo "dmgbuild failed three times"; exit 1; }
+	rm -rf $(DMG_ART)
 	@echo "Unsigned disk image: $(CI_DMG)"

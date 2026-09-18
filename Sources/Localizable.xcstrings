@@ -25181,55 +25181,214 @@
         }
       }
     },
-    "Claude daily pace ring": {
+    "Claude ring": {
       "extractionState": "manual",
       "localizations": {
-        "ru": {
+        "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Кольцо дневного темпа Claude"
+            "value": "Claude-Ring"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Anneau du rythme quotidien Claude"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Claude-Tagestempo-Ring"
+            "value": "Anneau Claude"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "Claude 日次ペースリング"
+            "value": "Claude リング"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Anel de ritmo diário do Claude"
+            "value": "Anel do Claude"
           }
         },
-        "zh-Hans": {
+        "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Claude 每日节奏圆环"
-          }
-        },
-        "zh-Hant": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Claude 每日節奏圓環"
+            "value": "Кольцо Claude"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Кільце денного темпу Claude"
+            "value": "Кільце Claude"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude 圆环"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude 圓環"
+          }
+        }
+      }
+    },
+    "Session": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sitzung"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Session"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "セッション"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sessão"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сессия"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сесія"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "会话"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "會話"
+          }
+        }
+      }
+    },
+    "Claude's main ring shows the current session, as Claude Code's own /usage does. The weekly limit stays in the card and on the thin ring.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claudes Hauptring zeigt die aktuelle Sitzung, wie Claude Codes eigenes /usage. Das Wochenlimit bleibt in der Karte und im dünnen Ring."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'anneau principal de Claude affiche la session en cours, comme le /usage de Claude Code. La limite hebdomadaire reste dans la carte et l'anneau fin."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude のメインリングに、Claude Code の /usage と同じく現在のセッションを表示します。週間上限はカードと細いリングに残ります。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O anel principal do Claude mostra a sessão atual, como o próprio /usage do Claude Code. O limite semanal fica no cartão e no anel fino."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Большое кольцо Claude показывает текущую сессию, как собственный /usage в Claude Code. Недельный лимит остаётся в карточке и в тонком кольце."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Головне кільце Claude показує поточну сесію, як власний /usage у Claude Code. Тижневий ліміт лишається в картці й тонкому кільці."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude 的主圆环显示当前会话，与 Claude Code 自带的 /usage 一致。每周限额保留在卡片和细圆环中。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude 的主圓環顯示當前會話，與 Claude Code 自帶的 /usage 一致。每週限額保留在卡片和細圓環中。"
+          }
+        }
+      }
+    },
+    "Claude's main ring shows the weekly limit instead of the session. The session moves to the thin ring and the card; threshold alerts follow the weekly ring.": {
+      "extractionState": "manual",
+      "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claudes Hauptring zeigt das Wochenlimit statt der Sitzung. Die Sitzung wandert in den dünnen Ring und die Karte; Schwellenwert-Hinweise folgen dem Wochenring."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'anneau principal de Claude affiche la limite hebdomadaire au lieu de la session. La session passe dans l'anneau fin et la carte ; les alertes de seuil suivent l'anneau hebdomadaire."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude のメインリングに、セッションの代わりに週間上限を表示します。セッションは細いリングとカードに移り、しきい値の通知は週間リングに従います。"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O anel principal do Claude mostra o limite semanal em vez da sessão. A sessão passa para o anel fino e o cartão; os alertas de limiar seguem o anel semanal."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Большое кольцо Claude показывает недельный лимит вместо сессии. Сессия переходит в тонкое кольцо и в карточку; пороговые уведомления следуют за недельным кольцом."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Головне кільце Claude показує тижневий ліміт замість сесії. Сесія переходить у тонке кільце й картку; порогові сповіщення йдуть за тижневим кільцем."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude 的主圆环显示每周限额，而不是会话。会话移至细圆环和卡片；阈值提醒跟随每周圆环。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude 的主圓環顯示每週限額，而不是會話。會話移至細圓環和卡片；門檻提醒跟隨每週圓環。"
           }
         }
       }

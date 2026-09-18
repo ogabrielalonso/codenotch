@@ -185,10 +185,20 @@ final class Preferences: ObservableObject {
         didSet { defaults.set(showUsagePace, forKey: Self.showUsagePaceKey) }
     }
 
-    /// Whether Claude's big ring shows the day's share of the weekly limit
-    /// instead of the session. See `DailyPace`.
-    @Published var claudeDailyPaceRing: Bool {
-        didSet { defaults.set(claudeDailyPaceRing, forKey: Keys.claudeDailyPaceRing) }
+    /// What Claude's big ring reads: the session, the weekly limit, or the
+    /// day's share of it. See `DailyPace` and `ClaudeWeeklyHeadline`.
+    ///
+    /// One published value rather than a switch for each, because the two
+    /// re-lead the same ring: moving between them through two switches
+    /// publishes the session in between, and the threshold notifier takes that
+    /// for a drop and the weekly reading after it for a fresh crossing.
+    @Published var claudeRing: ClaudeRing {
+        didSet {
+            // One flag per choice, so the daily pace stays under the key that
+            // existing installs and older builds already read.
+            defaults.set(claudeRing == .dailyPace, forKey: Keys.claudeDailyPaceRing)
+            defaults.set(claudeRing == .weekly, forKey: Keys.claudeWeeklyHeadline)
+        }
     }
 
     /// Whether Spark and code-review Codex windows appear in the hover card.
@@ -430,6 +440,7 @@ final class Preferences: ObservableObject {
         static let weeklyRing = "weeklyRing"
         static let weeklyRingDashed = "weeklyRingDashed"
         static let claudeDailyPaceRing = "claudeDailyPaceRing"
+        static let claudeWeeklyHeadline = "claudeWeeklyHeadline"
         static let showsMoveHandle = "showsMoveHandle"
         static let notchSurfaceStyle = "notchSurfaceStyle"
         static let watchLimit = "watchLimit"
@@ -666,9 +677,14 @@ final class Preferences: ObservableObject {
         self.resetTimeFormat = defaults.string(forKey: Keys.resetTimeFormat)
             .flatMap(ResetTimeFormat.init(rawValue:)) ?? .automatic
         self.showUsagePace = defaults.bool(forKey: Self.showUsagePaceKey)
-        // Off by default: it swaps what Claude's ring means, and that is a
-        // choice for whoever budgets their week that way.
-        self.claudeDailyPaceRing = defaults.bool(forKey: Keys.claudeDailyPaceRing)
+        // The session by default: it is what Claude Code itself leads with,
+        // and the other two swap what the ring means, which is a choice for
+        // whoever budgets their week that way.
+        if defaults.bool(forKey: Keys.claudeDailyPaceRing) {
+            self.claudeRing = .dailyPace
+        } else {
+            self.claudeRing = defaults.bool(forKey: Keys.claudeWeeklyHeadline) ? .weekly : .session
+        }
         self.showCodexExtraLimits = Self.storedShowCodexExtraLimits(defaults: defaults)
         self.deepSeekPricingEnabled = defaults.object(forKey: Keys.deepSeekPricingEnabled) as? Bool ?? true
         if let data = defaults.data(forKey: Keys.deepSeekPricingSchedule),

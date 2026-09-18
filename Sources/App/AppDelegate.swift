@@ -272,8 +272,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                     guard let store, let fleet, let preferences else { return nil }
                     let snap = await MainActor.run {
                         PhoneLinkSnapshotBuilder.build(
-                            snapshots: DailyPace.apply(to: store.snapshots,
-                                                       enabled: preferences.claudeDailyPaceRing),
+                            snapshots: ClaudeWeeklyHeadline.apply(
+                                to: DailyPace.apply(to: store.snapshots,
+                                                    enabled: preferences.claudeRing == .dailyPace),
+                                enabled: preferences.claudeRing == .weekly),
                             sessions: Array(fleet.sessions.values.flatMap { $0 }),
                             disconnected: store.disconnected,
                             order: preferences.providerOrder,
@@ -294,8 +296,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                     }
                     let snap = await MainActor.run {
                         PhoneLinkSnapshotBuilder.build(
-                            snapshots: DailyPace.apply(to: store.snapshots,
-                                                       enabled: preferences.claudeDailyPaceRing),
+                            snapshots: ClaudeWeeklyHeadline.apply(
+                                to: DailyPace.apply(to: store.snapshots,
+                                                    enabled: preferences.claudeRing == .dailyPace),
+                                enabled: preferences.claudeRing == .weekly),
                             sessions: Array(fleet.sessions.values.flatMap { $0 }),
                             disconnected: store.disconnected,
                             order: preferences.providerOrder,
@@ -608,23 +612,31 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             // The daily-pace window is laid over the store's snapshots here,
             // on the way out, rather than inside a provider: it is a reading
             // of a preference as much as of the account, and the store keeps
-            // what the vendor said. Paired with the preference so flipping the
-            // toggle redraws at once, without a fetch.
+            // what the vendor said. Paired with the preference so changing the
+            // Claude ring redraws at once, without a fetch. The weekly headline
+            // is laid over the same way.
             store.$notchSnapshots
-                .combineLatest(preferences.$claudeDailyPaceRing)
+                .combineLatest(preferences.$claudeRing)
                 .receive(on: RunLoop.main)
-                .sink { [weak fleet] snapshots, paced in
-                    fleet?.setSnapshots(DailyPace.apply(to: snapshots, enabled: paced))
+                .sink { [weak fleet] snapshots, ring in
+                    let snapshots = DailyPace.apply(to: snapshots, enabled: ring == .dailyPace)
+                    fleet?.setSnapshots(ClaudeWeeklyHeadline.apply(to: snapshots, enabled: ring == .weekly))
                 }
                 .store(in: &cancellables)
 
             store.$snapshots
-                .combineLatest(preferences.$claudeDailyPaceRing)
+                .combineLatest(preferences.$claudeRing)
                 .receive(on: RunLoop.main)
-                .sink { [weak statusItem] snapshots, paced in
-                    let snapshots = DailyPace.apply(to: snapshots, enabled: paced)
-                    statusItem?.snapshots = snapshots
-                    notifier.observe(snapshots)
+                .sink { [weak statusItem] snapshots, ring in
+                    let snapshots = DailyPace.apply(to: snapshots, enabled: ring == .dailyPace)
+                    let shown = ClaudeWeeklyHeadline.apply(to: snapshots, enabled: ring == .weekly)
+                    statusItem?.snapshots = shown
+                    notifier.observe(shown)
+                    // Limit and reset alerts name the window that ran out or
+                    // came back, and their titles and switches are keyed to the
+                    // session and weekly roles. With the weekly ring leading, a
+                    // spent session must still be announced as the session, so
+                    // these two keep the vendor's roles.
                     resetWatcher.observe(snapshots)
                     limitWatcher.observe(snapshots)
                 }

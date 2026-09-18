@@ -118,8 +118,8 @@ final class DailyPacePreferenceTests: XCTestCase {
         let name = "DailyPacePreferenceTests.\(UUID().uuidString)"
         let defaults = try XCTUnwrap(UserDefaults(suiteName: name))
         defer { defaults.removePersistentDomain(forName: name) }
-        XCTAssertFalse(Preferences(defaults: defaults).claudeDailyPaceRing)
-        Preferences(defaults: defaults).claudeDailyPaceRing = true
-        XCTAssertTrue(Preferences(defaults: defaults).claudeDailyPaceRing)
+        XCTAssertNotEqual(Preferences(defaults: defaults).claudeRing, .dailyPace)
+        Preferences(defaults: defaults).claudeRing = .dailyPace
+        XCTAssertEqual(Preferences(defaults: defaults).claudeRing, .dailyPace)
     }
 }

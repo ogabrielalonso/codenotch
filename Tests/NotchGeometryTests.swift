@@ -343,13 +343,20 @@ final class NotchPositionTests: XCTestCase {
         }
     }
 
+    /// `panelFrame`'s clamp pins such a pill to its low bound: the bottom of
+    /// the screen on a side edge, its left on a horizontal one. The range has
+    /// to collapse onto that same place, or a slider or carry would store an
+    /// offset the notch is never drawn at.
     func testAPillLongerThanTheScreenHasOnePlace() {
         let tiny = FakeScreen(frameValue: CGRect(x: 0, y: 0, width: 120, height: 90),
                               visibleFrameValue: CGRect(x: 0, y: 0, width: 120, height: 90))
         let size = CGSize(width: 400, height: 400)
         for edge in NotchEdge.allCases {
             let range = NotchGeometry.alongOffsetRange(for: tiny, panelSize: size, edge: edge)
-            XCTAssertEqual(range.lowerBound, range.upperBound, "\(edge)")
+            // Side: y = midY - height/2 - offset pinned at 0. Horizontal:
+            // x = midX - width/2 + offset pinned at 0.
+            let pinned: CGFloat = edge.isVertical ? 45 - 200 : 200 - 60
+            XCTAssertEqual(range, pinned...pinned, "\(edge)")
             XCTAssertEqual(
                 NotchGeometry.panelFrame(for: tiny, panelSize: size, edge: edge, alongOffset: range.lowerBound),
                 NotchGeometry.panelFrame(for: tiny, panelSize: size, edge: edge, alongOffset: 0),
@@ -378,19 +385,30 @@ final class NotchPositionTests: XCTestCase {
         let press = CGPoint(x: 1790, y: 700)
         XCTAssertEqual(
             NotchGeometry.carriedOffset(from: .right, at: 40, pressedAt: press,
-                                        to: .right, releasedAt: press, in: screen),
+                                        to: .right, releasedAt: press, hasMoved: true, in: screen),
             40, "a press that never moves leaves the notch where it was"
         )
         // 80pt further down the screen; AppKit's y grows up.
         XCTAssertEqual(
             NotchGeometry.carriedOffset(from: .right, at: 40, pressedAt: press,
-                                        to: .right, releasedAt: CGPoint(x: 1770, y: 620), in: screen),
+                                        to: .right, releasedAt: CGPoint(x: 1770, y: 620), hasMoved: true, in: screen),
             120
         )
         XCTAssertEqual(
             NotchGeometry.carriedOffset(from: .top, at: -30, pressedAt: CGPoint(x: 900, y: 1160),
-                                        to: .top, releasedAt: CGPoint(x: 980, y: 1150), in: screen),
+                                        to: .top, releasedAt: CGPoint(x: 980, y: 1150), hasMoved: true, in: screen),
             50
+        )
+    }
+
+    /// A click on the handle is the start of a carry, and the hand that makes
+    /// it is never perfectly still. A few points of that are not a new place.
+    func testAHandThatBarelyMovesOnAClickLeavesTheNotchWhereItWas() {
+        XCTAssertEqual(
+            NotchGeometry.carriedOffset(from: .right, at: 40, pressedAt: CGPoint(x: 1790, y: 700),
+                                        to: .right, releasedAt: CGPoint(x: 1789, y: 697),
+                                        hasMoved: false, in: screen),
+            40
         )
     }
 
@@ -398,12 +416,12 @@ final class NotchPositionTests: XCTestCase {
         let press = CGPoint(x: 1790, y: 700)
         XCTAssertEqual(
             NotchGeometry.carriedOffset(from: .right, at: 40, pressedAt: press,
-                                        to: .bottom, releasedAt: CGPoint(x: 1100, y: 10), in: screen),
+                                        to: .bottom, releasedAt: CGPoint(x: 1100, y: 10), hasMoved: true, in: screen),
             200
         )
         XCTAssertEqual(
             NotchGeometry.carriedOffset(from: .right, at: 40, pressedAt: press,
-                                        to: .left, releasedAt: CGPoint(x: 5, y: 300), in: screen),
+                                        to: .left, releasedAt: CGPoint(x: 5, y: 300), hasMoved: true, in: screen),
             284.5
         )
     }

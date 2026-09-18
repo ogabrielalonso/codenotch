@@ -395,6 +395,7 @@ struct SettingsView: View {
     /// feedback of its own on macOS, so without this the only sign it is
     /// clickable is the cursor.
     @State private var authorLinkHovered = false
+    @State private var adapterLinkHovered = false
     /// A gesture for this sitting, not a setting: the sidebar comes back on
     /// the next open, the same way a window's own sidebar toggle behaves.
     /// A short-lived acknowledgement for the recenter action. The notch may
@@ -1206,6 +1207,19 @@ struct SettingsView: View {
                             authorLinkHovered = inside
                             if inside { NSCursor.pointingHand.push() } else { NSCursor.pop() }
                         }
+                    // This fork's credit sits beside the author's, never in
+                    // place of it: the MIT notice asks for his to stay.
+                    Text(verbatim: "\u{00B7}")
+                    Text(L10n.t("Adapted by"))
+                    Link("@ogabrielalonso", destination: SettingsView.adapterURL)
+                        .foregroundStyle(adapterLinkHovered
+                                         ? preferences.accentColor.color : .primary)
+                        .underline(adapterLinkHovered)
+                        .animation(.easeOut(duration: 0.12), value: adapterLinkHovered)
+                        .onHover { inside in
+                            adapterLinkHovered = inside
+                            if inside { NSCursor.pointingHand.push() } else { NSCursor.pop() }
+                        }
                 }
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -1239,6 +1253,7 @@ struct SettingsView: View {
     }
 
     static let authorURL = URL(string: "https://x.com/hivinz_")!
+    static let adapterURL = URL(string: "https://github.com/ogabrielalonso")!
 
     /// The band across the top of the panel that the traffic lights sit in.
     ///

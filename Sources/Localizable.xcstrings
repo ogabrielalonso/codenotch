@@ -1,6 +1,76 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Gabriel Alonso's adaptation of Codenotch 1.14.0: Claude's weekly ring, a notch you can place anywhere, and a clearer Appearance.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A adaptação de Gabriel Alonso do Codenotch 1.14.0: o anel semanal do Claude, um notch que você coloca onde quiser e um Appearance mais claro."
+          }
+        }
+      }
+    },
+    "Claude's weekly ring": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O anel semanal do Claude"
+          }
+        }
+      }
+    },
+    "Claude ring, in Appearance, picks what Claude's big ring reads: the session, the weekly limit or the daily pace.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Claude ring, em Appearance, escolhe o que o anel grande do Claude mostra: a sessão, o limite semanal ou o ritmo diário."
+          }
+        }
+      }
+    },
+    "Place the notch anywhere": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Coloque o notch onde quiser"
+          }
+        }
+      }
+    },
+    "Let go of the move handle anywhere along any edge and the notch lands there, or set it with the new Position slider.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solte a alça de mover em qualquer ponto de qualquer borda e o notch fica ali, ou ajuste pelo novo slider Position."
+          }
+        }
+      }
+    },
+    "A clearer Appearance": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um Appearance mais claro"
+          }
+        }
+      }
+    },
+    "Appearance is split into Readings, Visibility, Style, Placement and Displays.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Appearance agora é dividido em Readings, Visibility, Style, Placement e Displays."
+          }
+        }
+      }
+    },
     "just now": {
       "extractionState": "manual",
       "localizations": {

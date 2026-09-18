@@ -31,6 +31,26 @@ struct ReleaseNote: Equatable {
 enum ReleaseNotes {
     static var all: [ReleaseNote] {
         [
+            // This fork's own builds: Codenotch 1.14.0 plus the changes below,
+            // numbered after the release they are based on.
+            ReleaseNote(
+                version: "1.14.0-gabriel.1",
+                headline: L10n.t("Gabriel Alonso's adaptation of Codenotch 1.14.0: Claude's weekly ring, a notch you can place anywhere, and a clearer Appearance."),
+                changes: [
+                    ReleaseNote.Change(
+                        title: L10n.t("Claude's weekly ring"),
+                        detail: L10n.t("Claude ring, in Appearance, picks what Claude's big ring reads: the session, the weekly limit or the daily pace.")
+                    ),
+                    ReleaseNote.Change(
+                        title: L10n.t("Place the notch anywhere"),
+                        detail: L10n.t("Let go of the move handle anywhere along any edge and the notch lands there, or set it with the new Position slider.")
+                    ),
+                    ReleaseNote.Change(
+                        title: L10n.t("A clearer Appearance"),
+                        detail: L10n.t("Appearance is split into Readings, Visibility, Style, Placement and Displays.")
+                    ),
+                ]
+            ),
             ReleaseNote(
                 version: "1.14.0",
                 headline: L10n.t("A new Settings, QianwenAI, Traditional Chinese, and a Windows notch you can carry to any edge."),

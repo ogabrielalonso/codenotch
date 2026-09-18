@@ -1,6 +1,36 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "Grok shows as working when scripts and agents run it.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O Grok aparece trabalhando quando scripts e agentes o usam."
+          }
+        }
+      }
+    },
+    "Headless Grok runs": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Execuções headless do Grok"
+          }
+        }
+      }
+    },
+    "A grok -p run, the way scripts and other agents use Grok, now shows as working on the notch, as its terminal app always did.": {
+      "localizations": {
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma execução grok -p, o jeito como scripts e outros agentes usam o Grok, agora aparece trabalhando no notch, como o app de terminal dele sempre apareceu."
+          }
+        }
+      }
+    },
     "Fixes on top of 1.14.0-gabriel.1.": {
       "localizations": {
         "pt-BR": {

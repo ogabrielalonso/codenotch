@@ -34,6 +34,16 @@ enum ReleaseNotes {
             // This fork's own builds: Codenotch 1.14.0 plus the changes below,
             // numbered after the release they are based on.
             ReleaseNote(
+                version: "1.14.0-gabriel.3",
+                headline: L10n.t("Grok shows as working when scripts and agents run it."),
+                changes: [
+                    ReleaseNote.Change(
+                        title: L10n.t("Headless Grok runs"),
+                        detail: L10n.t("A grok -p run, the way scripts and other agents use Grok, now shows as working on the notch, as its terminal app always did.")
+                    ),
+                ]
+            ),
+            ReleaseNote(
                 version: "1.14.0-gabriel.2",
                 headline: L10n.t("Fixes on top of 1.14.0-gabriel.1."),
                 changes: [

@@ -14,6 +14,10 @@ import SwiftUI
 struct EdgeDropZones: View {
     /// Which zone the pointer is currently over, if any.
     let target: NotchEdge?
+    /// Where along its edge the target zone sits, in `NotchGeometry`'s offset
+    /// convention: the place the notch would land, so letting go puts it
+    /// exactly where the preview showed. The other zones stay centred.
+    var targetOffset: CGFloat = 0
     /// The screen this is covering, in its own local coordinates.
     let size: CGSize
     /// The notch's resting footprint, so a zone is the size the notch will
@@ -75,31 +79,47 @@ struct EdgeDropZones: View {
             )
     }
 
-    /// Where a zone sits, welded to its own edge and centred along it.
+    /// Where a zone sits, welded to its own edge: centred along it, or for
+    /// the target at `targetOffset`, kept whole on screen.
     ///
     /// A side edge takes the resting length down the screen; a horizontal one
     /// turns that on its side, for the same reason the real notch does — four
     /// cells stacked vertically off the menu bar would reach a quarter of the
     /// way down the screen.
-    private func frame(for edge: NotchEdge) -> CGRect {
+    func frame(for edge: NotchEdge) -> CGRect {
+        // Local space grows down and right, the same directions the offset
+        // runs, so no flip is needed for either kind of edge.
+        let offset = edge == target ? targetOffset : 0
+        let span = edge.isVertical ? size.height : size.width
+        let start = min(max((span - restingLength) / 2 + offset, 0),
+                        max(span - restingLength, 0))
         switch edge {
         case .right:
-            return CGRect(x: size.width - restingDepth,
-                          y: (size.height - restingLength) / 2,
+            return CGRect(x: size.width - restingDepth, y: start,
                           width: restingDepth, height: restingLength)
         case .left:
-            return CGRect(x: 0,
-                          y: (size.height - restingLength) / 2,
+            return CGRect(x: 0, y: start,
                           width: restingDepth, height: restingLength)
         case .top:
-            return CGRect(x: (size.width - restingLength) / 2,
-                          y: 0,
+            return CGRect(x: start, y: 0,
                           width: restingLength, height: restingDepth)
         case .bottom:
-            return CGRect(x: (size.width - restingLength) / 2,
-                          y: size.height - restingDepth,
+            return CGRect(x: start, y: size.height - restingDepth,
                           width: restingLength, height: restingDepth)
         }
+    }
+
+    /// How far the pointer has to travel from the press before a carry counts
+    /// as choosing an edge.
+    static let carrySlop: CGFloat = 4
+
+    /// The edge a carry would land on: the one it started from until the
+    /// pointer has really moved, then whichever edge it is nearest. Without the
+    /// first half, a notch slid near a corner would change edges on a click of
+    /// its handle, because the handle itself is nearer the other edge.
+    static func target(from edge: NotchEdge, hasMoved: Bool,
+                       at point: CGPoint, in size: CGSize) -> NotchEdge {
+        hasMoved ? self.edge(at: point, in: size) : edge
     }
 
     /// The edge whose zone contains `point`, or the nearest one within reach.

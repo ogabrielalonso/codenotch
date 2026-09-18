@@ -17755,6 +17755,58 @@
         }
       }
     },
+    "Position": {
+      "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Положение"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "位置"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posição"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "位置"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "位置"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Position"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Положення"
+          }
+        }
+      }
+    },
     "%@%% deficit": {
       "extractionState": "manual",
       "localizations": {
@@ -27006,31 +27058,54 @@
         }
       }
     },
-    "The arc above the notch. Hold it to carry the notch to another edge — Edge above does the same.": {
-      "extractionState": "manual",
+    "The arc above the notch. Hold it and let go anywhere along any edge: the notch lands where you let go.": {
       "localizations": {
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дуга над панелью. Удерживайте её и отпустите в любом месте любого края: панель окажется там, где вы её отпустили."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L'arc au-dessus de l'encoche. Maintenez-le et relâchez-le n'importe où le long d'un bord : l'encoche se pose là où vous le relâchez."
+          }
+        },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "ノッチの上にある弧です。長押しすると、ノッチを別の辺へ運べます。上の「配置する辺」でも同じことができます。"
+            "value": "ノッチの上にある弧です。長押しして、どの辺のどこで離しても、ノッチはその位置に移ります。"
           }
         },
-        "uk": {
+        "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Дуга над вирізом. Утримуйте її, щоб перенести виріз на інший край — те саме робить «Край» вище."
+            "value": "O arco acima do notch. Segure-o e solte em qualquer ponto de qualquer borda: o notch fica onde você soltar."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "刘海上的弧。按住它可以把刘海拖到另一条边 — 上面的「边缘」也一样。"
+            "value": "刘海上的弧。按住它，在任意一条边的任意位置松开，刘海就会停在那里。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "瀏海上的弧形。按住它可把瀏海移到另一邊 — 上方的「邊緣」也能做同樣的事。"
+            "value": "瀏海上的弧形。按住它，在任一邊的任意位置放開，瀏海就會停在那裡。"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Bogen über der Notch. Halte ihn gedrückt und lass ihn an beliebiger Stelle eines Rands los: Die Notch landet dort, wo du loslässt."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дуга над вирізом. Утримуйте її та відпустіть у будь-якому місці будь-якого краю: виріз опиниться там, де ви її відпустили."
           }
         }
       }

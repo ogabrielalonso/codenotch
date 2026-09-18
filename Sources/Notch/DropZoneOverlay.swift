@@ -18,11 +18,14 @@ final class DropZoneOverlay {
         self.screen = screen
     }
 
-    /// Puts the zones on screen, or updates which one is highlighted.
-    func show(target: NotchEdge?, restingDepth: CGFloat, restingLength: CGFloat) {
+    /// Puts the zones on screen, or updates which one is highlighted and
+    /// where along its edge the notch would land.
+    func show(target: NotchEdge?, targetOffset: CGFloat = 0,
+              restingDepth: CGFloat, restingLength: CGFloat) {
         let frame = screen.frame
         let view = EdgeDropZones(
             target: target,
+            targetOffset: targetOffset,
             size: frame.size,
             restingDepth: restingDepth,
             restingLength: restingLength

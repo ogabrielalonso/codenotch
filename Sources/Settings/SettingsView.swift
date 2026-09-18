@@ -402,6 +402,10 @@ struct SettingsView: View {
     /// already be centred, in which case the action has no visible movement;
     /// the acknowledgement keeps the button from feeling inert.
     @State private var didRecentre = false
+    /// The position slider's value. Held here because the stored offset is
+    /// not `@Published`; re-read whenever the defaults change, so a ⌥-drag, a
+    /// carry or Recentre moves the knob too.
+    @State private var notchPosition: CGFloat = 0
     /// Switching off has to reach the store's archive, not just the preference
     /// — see `UsageStore.signOut(providerID:)`.
     let signOut: (String) -> Void
@@ -417,6 +421,13 @@ struct SettingsView: View {
     /// nothing would tell the notch to move, and the setting would only take
     /// effect the next time the edge changed.
     let resetPosition: () -> Void
+    /// The offsets the notch can be drawn at, for the position slider; nil
+    /// hides it. A closure for the same reason `resetPosition` is one, and
+    /// because the range follows the display, the size and the ring count.
+    var positionRange: () -> ClosedRange<CGFloat>? = { nil }
+    /// Moves the notch along its edge from the position slider, both the
+    /// stored offset and the live one, the way `resetPosition` does.
+    var setPosition: (CGFloat) -> Void = { _ in }
     let quit: () -> Void
     @ObservedObject var updater: Updater
     var ollamaRelay: OllamaActivityRelay? = nil
@@ -892,6 +903,34 @@ struct SettingsView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
 
+                // The ⌥-drag and the handle place the notch by hand. This is
+                // the one of the three that is on screen to be found, and the
+                // one that puts it at the same place twice.
+                if let range = positionRange(), range.lowerBound < range.upperBound {
+                    Slider(
+                        value: Binding(
+                            get: { min(max(notchPosition, range.lowerBound), range.upperBound) },
+                            set: { notchPosition = $0; setPosition($0) }
+                        ),
+                        in: range
+                    ) {
+                        Text(L10n.t("Position"))
+                    } minimumValueLabel: {
+                        Text(preferences.notchEdge.isVertical ? NotchEdge.top.title : NotchEdge.left.title)
+                    } maximumValueLabel: {
+                        Text(preferences.notchEdge.isVertical ? NotchEdge.bottom.title : NotchEdge.right.title)
+                    }
+                    .onAppear { notchPosition = preferences.offset(for: preferences.notchEdge) }
+                    .onChange(of: preferences.notchEdge) { _, edge in
+                        notchPosition = preferences.offset(for: edge)
+                    }
+                    .onReceive(NotificationCenter.default
+                        .publisher(for: UserDefaults.didChangeNotification)
+                        .receive(on: RunLoop.main)) { _ in
+                        notchPosition = preferences.offset(for: preferences.notchEdge)
+                    }
+                }
+
                 // The nudge has been draggable since the edge picker existed,
                 // and nothing on screen has ever said so — the only way to
                 // find it was to hold ⌥ on the notch and see what happened.
@@ -927,7 +966,7 @@ struct SettingsView: View {
                 // The arc above the notch. Hiding it loses nothing that cannot
                 // be reached another way: Edge, above, moves the notch too.
                 Toggle(L10n.t("Show move handle"), isOn: $preferences.showsMoveHandle)
-                Text(L10n.t("The arc above the notch. Hold it to carry the notch to another edge — Edge above does the same."))
+                Text(L10n.t("The arc above the notch. Hold it and let go anywhere along any edge: the notch lands where you let go."))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)

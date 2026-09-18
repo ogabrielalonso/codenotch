@@ -939,7 +939,9 @@ struct SettingsView: View {
             }
 
             Section(L10n.t("Displays")) {
-                Picker(L10n.t("Displays"), selection: $preferences.notchScope) {
+                // Not "Displays": that is the block's own title now, and the
+                // choice here is which of them the notch shows on.
+                Picker(L10n.t("Show on"), selection: $preferences.notchScope) {
                     ForEach(NotchScreenScope.allCases) { Text($0.title).tag($0) }
                 }
                 .pickerStyle(.segmented)

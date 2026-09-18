@@ -765,7 +765,11 @@ struct SettingsView: View {
     // warning.
     private var appearancePane: some View {
         Form {
-            Section(L10n.t("Notch")) {
+            // Five groups rather than one, in the order the questions come up: what
+            // the rings read, when the notch shows, how it looks, where it sits and
+            // on which screens. As one section, the choices about the numbers were
+            // lost among the ones about the window.
+            Section(L10n.t("Readings")) {
                 Picker(L10n.t("Reset time"), selection: $preferences.resetTimeFormat) {
                     ForEach(ResetTimeFormat.allCases) { Text($0.title).tag($0) }
                 }
@@ -816,7 +820,9 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
+            }
 
+            Section(L10n.t("Visibility")) {
                 Picker(L10n.t("Show"), selection: $preferences.notchVisibility) {
                     ForEach(NotchVisibility.allCases) { Text($0.title).tag($0) }
                 }
@@ -832,17 +838,9 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
+            }
 
-                Picker(L10n.t("Edge"), selection: $preferences.notchEdge) {
-                    ForEach(NotchEdge.allCases) { Text($0.title).tag($0) }
-                }
-                .pickerStyle(.segmented)
-
-                Text(preferences.notchEdge.explanation)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
-
+            Section(L10n.t("Style")) {
                 // Offered only where there is a glass to choose. Below macOS 26
                 // the choice has one possible answer, and a picker that cannot
                 // be moved is worse than no picker at all.
@@ -902,6 +900,18 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+            }
+
+            Section(L10n.t("Placement")) {
+                Picker(L10n.t("Edge"), selection: $preferences.notchEdge) {
+                    ForEach(NotchEdge.allCases) { Text($0.title).tag($0) }
+                }
+                .pickerStyle(.segmented)
+
+                Text(preferences.notchEdge.explanation)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 // The ⌥-drag and the handle place the notch by hand. This is
                 // the one of the three that is on screen to be found, and the
@@ -970,7 +980,9 @@ struct SettingsView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
+            }
 
+            Section(L10n.t("Displays")) {
                 Picker(L10n.t("Displays"), selection: $preferences.notchScope) {
                     ForEach(NotchScreenScope.allCases) { Text($0.title).tag($0) }
                 }
